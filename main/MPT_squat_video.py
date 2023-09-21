@@ -222,11 +222,11 @@ def main(video_path, shoulder_threshold_meters=0.2, toes_threshold_degrees=15):
         
     overall_score = (average_shoulder_score + average_knee_score + average_toes_score) / 3
 
-    print(f"Overall Performance Score: {overall_score:.2f}%")
-    print(shoulder_feedback)
-    print(knee_feedback)
-    print(toes_feedback)
+    result = {
+        'overall_score': overall_score,
+        'shoulder_feedback': shoulder_feedback,
+        'knee_feedback': knee_feedback,
+        'toes_feedback': toes_feedback
+    }    
 
-if __name__ == "__main__":
-    video_path = r"C:\Users\Schule\Desktop\MPT_Project\WhatsApp Video 2023-08-30 at 11.58.27.mp4"
-    main(video_path)
+    return result
