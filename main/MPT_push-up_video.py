@@ -151,10 +151,12 @@ def main(video_path, shoulder_threshold_meters=0.2, fingertips_threshold_pixels=
 
     overall_score = (average_shoulder_score + average_hand_score) / 2
     
-    print(f"Overall Performance Score: {overall_score:.2f}%")
-    print(shoulder_feedback)
-    print(hand_feedback)
+    result = {
+        'overall_score': overall_score,
+        'shoulder_feedback': shoulder_feedback,
+        'hand_feedback': hand_feedback,
+    }    
+    
+    
+    return result
 
-if __name__ == "__main__":
-    video_path = r"C:\Users\Schule\Desktop\MPT_Project\WhatsApp Video 2023-08-30 at 12.03.49.mp4"
-    main(video_path, shoulder_threshold_meters=0.2, fingertips_threshold_pixels=50)
