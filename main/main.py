@@ -2,6 +2,7 @@ import streamlit as st
 import subprocess
 import MPT_pushup_video 
 import MPT_squat_video
+import MPT_SitUp_video
 
 # Streamlit-Anmeldeseite
 st.title('Anmeldung erforderlich')
@@ -37,7 +38,7 @@ if is_auth:
         exercises = {
             'Liegestützen': 'Hier kommt die Beschreibung für Liegestützen.',
             'Kniebeugen': 'Hier kommt die Beschreibung für Kniebeugen.',
-            'Übung 3': 'Hier kommt die Beschreibung für Übung 3.'
+            'Sit-Up': 'Hier kommt die Beschreibung für Sit-Up.'
         }
         
         # Create a placeholder for the video analysis results
@@ -93,6 +94,30 @@ if is_auth:
                 st.write(result['shoulder_feedback'])
                 st.write(result['knee_feedback'])
                 st.write(result['toes_feedback'])
+                
+        if selected_exercise == 'Sit-Up' and live_or_video == 'Webcam':
+            st.write('Du hast "Webcam" ausgewählt. Bitte erlaube den Zugriff auf deine Webcam.')
+            if st.button('Starte mit den Sit-Ups'):
+                subprocess.run(['python', r"C:\Users\Schule\Desktop\MPT_Project\MPT_SitUp-webcam.py"])
+
+        if selected_exercise == 'Sit-Up' and live_or_video == 'Video':
+            st.write('Du hast "Video" ausgewählt. Lade ein Video hoch:')
+            uploaded_file = st.file_uploader("Video-Datei hochladen", type=["mp4", "avi"])
+    
+            if uploaded_file is not None:
+                # Save the uploaded video to a temporary file
+                with open("temp_video.mp4", "wb") as f:
+                    f.write(uploaded_file.read())
+            
+                # Call the main function from the MPT_situp_video module
+                video_path = "temp_video.mp4"  # The path to the uploaded video
+                result = MPT_SitUp_video.main(video_path, elbow_threshold_pixels=20, knee_threshold_slope=0.1)
+        
+                # Display the analysis results
+                st.write(f"Overall Performance Score: {result['overall_score']:.2f}%")
+                st.write(result['knee_feedback'])
+                st.write(result['elbow_feedback'])
+
 
     elif selected_page == 'Übungen verwalten':
         # Seite für die Verwaltung der Übungen
